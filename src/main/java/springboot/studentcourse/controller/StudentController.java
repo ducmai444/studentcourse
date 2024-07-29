@@ -18,6 +18,7 @@ import vn.saolasoft.base.api.response.APIResponse;
 import vn.saolasoft.base.exception.APIException;
 import vn.saolasoft.base.service.filter.BaseFilter;
 import vn.saolasoft.base.service.filter.PaginationInfo;
+import vn.saolasoft.base.service.filter.SortInfo;
 
 import java.util.List;
 import java.util.Objects;
@@ -73,7 +74,15 @@ public class StudentController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<APIListResponse<List<StudentDtoGet>>> getListCourse(@RequestBody PaginationInfo paginationInfo) {
+    public ResponseEntity<APIListResponse<List<StudentDtoGet>>> getListStudent(@RequestParam int firstRow,
+                                                                             @RequestParam int maxResults,
+                                                                             @RequestParam String sortInfo,
+                                                                             @RequestParam Boolean orderAsc) {
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setFirstRow(firstRow);
+        paginationInfo.setMaxResults(maxResults);
+        paginationInfo.setOrders(new SortInfo(sortInfo, orderAsc));
+
         return studentAPIMethod.getList(paginationInfo);
     }
 

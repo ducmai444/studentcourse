@@ -19,6 +19,7 @@ import vn.saolasoft.base.api.response.APIResponse;
 import vn.saolasoft.base.exception.APIException;
 import vn.saolasoft.base.service.filter.BaseFilter;
 import vn.saolasoft.base.service.filter.PaginationInfo;
+import vn.saolasoft.base.service.filter.SortInfo;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class CourseController {
 
     @PostMapping("/")
     public ResponseEntity<APIResponse<Long>> addCourse(@RequestBody CourseDtoCreate courseDtoCreate, @RequestParam Long callerId) {
+
         Course course = courseDtoCreate.toEntry();
         Teacher teacher = teacherRepository.findById(courseDtoCreate.getTeacher().getId())
                 .orElseThrow(() -> new ObjectNotFoundException(courseDtoCreate, "Teacher not found"));
@@ -78,7 +80,15 @@ public class CourseController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<APIListResponse<List<CourseDtoGet>>> getListCourse(@RequestBody PaginationInfo paginationInfo) {
+    public ResponseEntity<APIListResponse<List<CourseDtoGet>>> getListCourse(@RequestParam int firstRow,
+                                                                             @RequestParam int maxResults,
+                                                                             @RequestParam String sortInfo,
+                                                                             @RequestParam Boolean orderAsc) {
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setFirstRow(firstRow);
+        paginationInfo.setMaxResults(maxResults);
+        paginationInfo.setOrders(new SortInfo(sortInfo, orderAsc));
+
         return courseAPIMethod.getList(paginationInfo);
     }
 
@@ -88,7 +98,9 @@ public class CourseController {
             @RequestParam int firstRow,
             @RequestParam int maxResults,
             @RequestParam(required = false) String orderBy) {
+
         PaginationInfo paginationInfo = new PaginationInfo(firstRow, maxResults, orderBy);
+
         return courseAPIMethod.search(baseFilter, paginationInfo);
     }
 }
