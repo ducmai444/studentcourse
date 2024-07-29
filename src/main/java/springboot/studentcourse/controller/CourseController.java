@@ -33,7 +33,6 @@ public class CourseController {
     private TeacherRepository teacherRepository;
     private CourseRepository courseRepository;
 
-
     public CourseController(CourseAPIMethod courseAPIMethod) {
         this.courseAPIMethod = courseAPIMethod;
     }
@@ -82,12 +81,12 @@ public class CourseController {
     @GetMapping("/list")
     public ResponseEntity<APIListResponse<List<CourseDtoGet>>> getListCourse(@RequestParam int firstRow,
                                                                              @RequestParam int maxResults,
-                                                                             @RequestParam String sortInfo,
-                                                                             @RequestParam Boolean orderAsc) {
+                                                                             @RequestParam String orderColumn,
+                                                                             @RequestParam boolean orderAsc) {
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setFirstRow(firstRow);
         paginationInfo.setMaxResults(maxResults);
-        paginationInfo.setOrders(new SortInfo(sortInfo, orderAsc));
+        paginationInfo.setOrders(new SortInfo(orderColumn, orderAsc));
 
         return courseAPIMethod.getList(paginationInfo);
     }

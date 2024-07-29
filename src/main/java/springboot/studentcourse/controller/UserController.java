@@ -35,7 +35,6 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model, UserDto userDto) {
-
         model.addAttribute("user", userDto);
         return "login";
     }

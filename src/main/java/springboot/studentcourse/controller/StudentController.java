@@ -76,12 +76,12 @@ public class StudentController {
     @GetMapping("/list")
     public ResponseEntity<APIListResponse<List<StudentDtoGet>>> getListStudent(@RequestParam int firstRow,
                                                                              @RequestParam int maxResults,
-                                                                             @RequestParam String sortInfo,
-                                                                             @RequestParam Boolean orderAsc) {
+                                                                             @RequestParam String orderColumn,
+                                                                             @RequestParam boolean orderAsc) {
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setFirstRow(firstRow);
         paginationInfo.setMaxResults(maxResults);
-        paginationInfo.setOrders(new SortInfo(sortInfo, orderAsc));
+        paginationInfo.setOrders(new SortInfo(orderColumn, orderAsc));
 
         return studentAPIMethod.getList(paginationInfo);
     }
